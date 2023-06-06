@@ -1,17 +1,16 @@
-import { Controller, Get, HttpCode, Post, Put, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Post, Res, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 
 @Controller('cats')
 export class CatsController {
+  @Post()
+  create(@Res() res: Response) {
+    res.status(HttpStatus.CREATED).send();
+  }
 
-    @Post()
-    @HttpCode(204)
-    create(): string {
-      return 'This action adds a new cat';
-    }
-
-    @Get()
-    findAll(@Req() request: Request): string {
-        return 'This action returns all cats';
-    }
+  @Get()
+  findAll(@Res({ passthrough: true }) res: Response) {
+    res.status(HttpStatus.OK);
+    return [];
+  }
 }
