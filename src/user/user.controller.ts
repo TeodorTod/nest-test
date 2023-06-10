@@ -1,12 +1,8 @@
-import { Controller, Delete, Get, Param, Patch, Post, Req } from "@nestjs/common";
-import { AppService } from "src/app.service";
+import { Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 
-@Controller('/user')
-
+@Controller('user')
 export class UserController {
-
-
     @Get()
     getUser1() {
         return 'I\'m from user component'
