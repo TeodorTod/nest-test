@@ -1,38 +1,35 @@
-import { Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('user')
 export class UserController {
+  constructor(private userService: UserService) {}
 
-  constructor(private userService: UserService) {
-
+  @Get()
+  getUsers() {
+    return this.userService.get();
   }
 
-    @Get()
-    getUser() {
-        // return 'I\'m from user component'
-        return this.userService.get();
-    }
-  
-    @Post()
-    store(@Req() req: Request) {
-      // return req.body;
-      return this.userService.create(req)
-    }
-  
-    @Patch('/:userId')
-    update(@Req() req: Request) {
-      return req.body;
-    }
-  
-    // @Get('/:userId')
-    // getUser(@Param() params: { userId: number }) {
-    //   return params
-    // }
-  
-    @Delete('/:userId')
-    deleteUser(@Param() params: { userId: number }) {
-      return params
-    }
+  @Post()
+  store(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @Patch('/:userId')
+  update(@Body() updateUserDto: UpdateUserDto, @Param() param: { userId: number }) {
+    return this.userService.update(updateUserDto, param);
+  }
+
+  @Get('/:userId')
+  getUser(@Param() param: { userId: number }) {
+    return this.userService.show(param);
+  }
+
+  @Delete('/:userId')
+  deleteUser(@Param() param: { userId: number }) {
+    return this.userService.delete(param);
+  }
 }
