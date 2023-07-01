@@ -1,22 +1,22 @@
-import { Controller, Get, Post, Body, Param, Query, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, UsePipes, ValidationPipe,ParseIntPipe, ParseBoolPipe  } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 
 @Controller('users')
 export class UsersController {
     @Get()
-    getUsers(@Query('sortBy') sortBy: string) {
-        return {sortBy};
+    getUsers(@Query('sortDesc', ParseBoolPipe) sortDesc: boolean) {
+        return {sortDesc};
     }
 
    @Post()
-   @UsePipes()
+   @UsePipes(new ValidationPipe())
    createuser(@Body() userData: CreateUserDto) {
         console.log(userData.username); 
         return {userData} 
    }
 
    @Get(':id')
-   getUserById(@Param('id') id: string) {
+   getUserById(@Param('id', ParseIntPipe) id: number) {
     return {id}
     
    }
